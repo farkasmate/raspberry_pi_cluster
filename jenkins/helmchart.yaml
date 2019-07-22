@@ -1,0 +1,26 @@
+# uri: http://cluster/jenkins
+# username: admin
+# password: printf $(kubectl get secret --namespace default jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode);echo
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: jenkins
+spec:
+  chart: https://%{KUBERNETES_API}%/static/charts/jenkins-1.3.6.tgz
+  valuesContent: |
+    master:
+      image: matefarkas/jenkins
+      imageTag: 2.182-slim-arm
+      jenkinsUriPrefix: /jenkins
+      serviceType: ClusterIP
+      ingress:
+        enabled: true
+        annotations:
+          path: /jenkins
+    agent:
+      image: matefarkas/jenkins-jnlp-agent
+      imageTag: 3.29-slim-arm
+      podName: jenkins-agent
+    persistence:
+      enabled: false
