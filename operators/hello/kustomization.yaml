@@ -1,0 +1,13 @@
+resources:
+  - crd.yaml
+  - deployment.yaml
+  - hello.yaml
+  - rbac.yaml
+
+configMapGenerator:
+- name: controller-script
+  files:
+    - controller.sh
+
+generatorOptions:
+  disableNameSuffixHash: true
