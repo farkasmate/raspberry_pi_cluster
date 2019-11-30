@@ -1,4 +1,5 @@
 bases:
   - certs
+  - docker-registry
   - jenkins
   - zerotier

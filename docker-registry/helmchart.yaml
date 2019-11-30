@@ -1,0 +1,17 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: docker-registry
+spec:
+  chart: stable/docker-registry
+  valuesContent: |
+    ingress:
+      enabled: true
+      hosts:
+        - red
+      tls:
+        - secretName: red-tls
+      annotations:
+        traefik.ingress.kubernetes.io/redirect-entry-point: https
+        traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
+      path: /docker-registry
