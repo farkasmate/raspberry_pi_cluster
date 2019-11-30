@@ -5,7 +5,7 @@ resources:
   - rbac.yaml
 
 configMapGenerator:
-- name: controller-script
+- name: hello-controller-script
   files:
     - controller.sh
 
