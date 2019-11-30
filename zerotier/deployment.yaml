@@ -1,0 +1,52 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  namespace: default
+  name: zerotier
+  labels:
+    app: zerotier
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: zerotier
+  template:
+    metadata:
+      labels:
+        app: zerotier
+    spec:
+      containers:
+        - name: zerotier
+          image: matefarkas/zerotier:1.4.4-slim-arm
+          ports:
+            - name: vpn
+              protocol: UDP
+              containerPort: 9993
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          volumeMounts:
+            - mountPath: /etc/zerotier-one
+              name: zerotier-config
+            - mountPath: /dev/net/tun
+              name: tun
+        - name: tinyproxy
+          image: matefarkas/tinyproxy:1.10.0-slim-arm
+          volumeMounts:
+            - mountPath: /etc/tinyproxy
+              name: tinyproxy-config
+      volumes:
+        - name: zerotier-config
+          secret:
+            secretName: zerotier-config
+            defaultMode: 0400
+        - name: tinyproxy-config
+          configMap:
+            name: tinyproxy-config
+            defaultMode: 0400
+        - name: tun
+          hostPath:
+            path: /dev/net/tun

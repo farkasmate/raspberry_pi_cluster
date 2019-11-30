@@ -1,0 +1,11 @@
+resources:
+  - deployment.yaml
+  - secret.yaml
+
+configMapGenerator:
+  - name: tinyproxy-config
+    files:
+      - files/tinyproxy.conf
+
+generatorOptions:
+  disableNameSuffixHash: true
