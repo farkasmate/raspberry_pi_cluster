@@ -16,7 +16,11 @@ spec:
       serviceType: ClusterIP
       ingress:
         enabled: true
+        hostName: red
+        tls:
+          - secretName: red-tls
         annotations:
+          traefik.ingress.kubernetes.io/redirect-entry-point: https
           path: /jenkins
     agent:
       image: matefarkas/jenkins-jnlp-agent
