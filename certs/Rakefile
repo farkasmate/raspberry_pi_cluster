@@ -1,0 +1,43 @@
+require 'base64'
+require 'tmpdir'
+require 'yaml'
+
+namespace :cert do
+  desc 'Generate self-signed certificates'
+  task :generate, :hostname do |_, args|
+    hostname = args[:hostname]
+    subject = "/CN=#{hostname}.self.signed"
+
+    raise 'Hostname parameter is mandatory' unless hostname
+
+    Dir.mktmpdir do |dir|
+      certfile = File.join(dir, 'temp.crt')
+      keyfile = File.join(dir, 'temp.key')
+
+      `openssl req -x509 -newkey rsa:4096 -out #{certfile} -keyout #{keyfile} -days 3650 -nodes -subj '#{subject}' 2> /dev/null`
+
+      cert_base64 = Base64.strict_encode64(File.read(certfile))
+      key_base64 = Base64.strict_encode64(File.read(keyfile))
+
+      key_crypt = `eyaml encrypt --string #{key_base64} --output string`.chomp
+
+      secret = {
+        'apiVersion' => 'v1',
+        'kind' => 'Secret',
+        'metadata' => {
+          'name' => "#{hostname}-tls",
+          'annotations' => {
+            'subject' => subject.to_s
+          },
+        },
+        'type' => 'kubernetes.io/tls',
+        'data' => {
+          'tls.crt' => cert_base64.to_s,
+          'tls.key' => key_crypt.to_s
+        }
+      }
+
+      File.write(File.join('.', "#{hostname}-tls.yaml"), secret.to_yaml)
+    end
+  end
+end
