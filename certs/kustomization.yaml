@@ -1,2 +1,3 @@
 resources:
+  - docker-registry-tls.yaml
   - red-tls.yaml
