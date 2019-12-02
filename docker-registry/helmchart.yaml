@@ -8,10 +8,8 @@ spec:
     ingress:
       enabled: true
       hosts:
-        - red
+        - docker-registry.self.signed
       tls:
-        - secretName: red-tls
+        - secretName: docker-registry-tls
       annotations:
         traefik.ingress.kubernetes.io/redirect-entry-point: https
-        traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
-      path: /docker-registry

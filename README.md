@@ -3,5 +3,5 @@
 ## Apply config
 
 ```
-kubectl apply -k .
+kubectl eyaml apply -k .
 ```
