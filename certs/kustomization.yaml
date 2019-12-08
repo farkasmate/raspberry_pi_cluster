@@ -1,3 +1,3 @@
 resources:
-  - docker-registry-tls.yaml
+  - csikoste-wildcard-tls.yaml
   - red-tls.yaml
