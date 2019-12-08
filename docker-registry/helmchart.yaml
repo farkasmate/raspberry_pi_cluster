@@ -8,8 +8,8 @@ spec:
     ingress:
       enabled: true
       hosts:
-        - docker-registry.self.signed
+        - docker-registry.csikoste.com
       tls:
-        - secretName: docker-registry-tls
+        - secretName: csikoste-wildcard-tls
       annotations:
         traefik.ingress.kubernetes.io/redirect-entry-point: https
