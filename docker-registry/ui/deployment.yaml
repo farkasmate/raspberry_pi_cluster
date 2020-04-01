@@ -5,7 +5,7 @@ metadata:
   labels:
     apps: regui
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       apps: regui
@@ -28,6 +28,6 @@ spec:
             secretKeyRef:
               name: docker-push-secret
               key: password
-        command: ["sh", "-c", "reg server --asset-path /ui/ -r https://docker-registry.csikoste.com -u $(REGISTRY_USERNAME) -p $(REGISTRY_PASSWORD)"]
+        command: ["sh", "-c", "reg server --interval 1m -r https://docker-registry.csikoste.com -u $(REGISTRY_USERNAME) -p $(REGISTRY_PASSWORD)"]
         ports:
         - containerPort: 8080
