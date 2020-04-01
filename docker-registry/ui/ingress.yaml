@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: regui
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.frontend.rule.type: PathPrefixStrip
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+
+spec:
+  rules:
+  - host: reg.csikoste.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: regui
+          servicePort: http

@@ -1,3 +1,5 @@
+bases:
+  - ui
 resources:
   - helmchart.yaml
   - secret.yaml
