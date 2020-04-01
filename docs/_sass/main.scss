@@ -1,0 +1,17 @@
+.markdown-body {
+  table {
+    img {
+      display: block;
+    }
+
+    td, tr:nth-child(n) {
+      background-color: transparent;
+      border: none;
+      padding: 5px;
+    }
+
+    th {
+      display: none;
+    }
+  }
+}
