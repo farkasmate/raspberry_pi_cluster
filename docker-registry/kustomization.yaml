@@ -1,5 +1,7 @@
 bases:
   - ui
+
 resources:
   - helmchart.yaml
+  - persistent_volume.yaml
   - secret.yaml

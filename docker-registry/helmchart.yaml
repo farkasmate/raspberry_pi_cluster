@@ -13,5 +13,9 @@ spec:
         - secretName: csikoste-wildcard-tls
       annotations:
         traefik.ingress.kubernetes.io/redirect-entry-point: https
+    persistence:
+      enabled: true
+      size: 10Gi
+      storageClass: manual
     secrets:
       htpasswd: ENC[PKCS7,MIIBuQYJKoZIhvcNAQcDoIIBqjCCAaYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAtKlaZceskGKwQRz0ennuMnpUmj2bnZS+Ndgaud2hJONy8TBEtsC0lj3rsfvX7kr+Jb/mkXKaF/B20252PjjhSFwKGpFmR5jidIqY4sART+GdQGKyTC/V0jctzDUOZYVg0443fo6amnSmXwjbkxA1HGRdQ0g6I4Qr0bBKa/Xj2cJhLf1pClN8VEwNvmmEo4NKVu9ykpDzlP6Tqw/BrbY+s8Eb/tFSXIRknIM/o4WzlwTnmGx8U05m1WAo7Wy3rbaDGlQLNdvvVC8tIpYWBI8pRKzwWOcMq3lsO1Lb72zgzIJ1ifKl6R3ke4cZF8LZF2B7euNDk+iQVXYucEjDCNqEJjB8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBDYy4hjvqCjAscZ45GreY9XgFDE4y1C3wNsGV+9VPWyO8FRLCtiBhu51nWJjZMd5K30L7aQOGkPy5jHF6DjkA3fGDLKI0xLy+Yu89HQtqLajKEk/PIuxIPKMd+OgyxB/B200w==]

@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: docker-registry-pv-secret
+type: kubernetes.io/iscsi-chap
+stringData:
+  node.session.auth.username: ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEASDbuJL6aJp9+NBKCQy0Wgv64Oi83de8BKXEB/280qbGqWzr2TrN+UmUe83SKPHztSsAGyPROz0+YYJF36tQMGVdEKDeSSddovfnU6ZOqDTiLtiTlxh6HA0WqIHk8/s+xf7wyQ1+LTjFQ58FT0OPlgx08xLqctk358j9a1c9BionOpdyynaw57ZsaF7BfyxfuVB2LCAr6fwxi8ATmkyIIcUc6PP5eDo4iW3XrmEnfrCvUGLHQm59Mr5XvyXiiSAl02tkaadbfk9hfVLdWi/QV3qSvzz4JQvpDTr2xxndfhx9DpypxXGBYsbp267ycDPBXzMo8jqfx6jr+2kMknQsx7jA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBB8/sRUcQzaKp1AuK7L4odigBBhVCQMKCk+GaIIOKjuWKHU]
+  node.session.auth.password: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAdoX17mK4RzA1yQoDldNvvP1i/B6BYS9S5DSYaG5eKcZR8kvFNHM9crZH45Nr0MgDoBInYITJqGFKlLGR/3H+a8UF8La27sH3Glo0uQllu+g0CNWa2fWBQlBVdfQE8SuLim+sq2jkDn0ziUNwSoNMAigaqixjBmtCb/XYpWAIgwL3dYcvTUv3xfaKsXcR9fEGb0jpVZ7vx+tTO7zRsfqznlISnOwNcI9KWqRupEh8BmqA9CsE2jUjSIACqTfoNwLLFgcrfgXKWMo4R6XP6H181Zjfd+0tJTcXS5Pv7EtCdREK+J6DLWjq3l08aelDWstd5thEnvpw9Z1fn3Sv8o/1hTBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBA6ZD2n/fTKPTzXHLyZqjJLgCBPI5Bc/b9iswow9bg6qD2iIOhEOom005B/5GEiqLdELQ==]
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: docker-registry-pv
+  annotations:
+    pv.kubernetes.io/provisioned-by: manually
+spec:
+  storageClassName: manual
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: docker-registry
+    namespace: default
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  iscsi:
+    targetPortal: 10.100.0.101 # nas.csikoste.com
+    iqn: iqn.2013-03.com.wdc:mycloudex2ultra:docker-registry
+    lun: 0
+    fsType: ext4
+    chapAuthSession: true
+    secretRef:
+       name: docker-registry-pv-secret
