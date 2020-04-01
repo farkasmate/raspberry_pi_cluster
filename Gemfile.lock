@@ -1,15 +1,15 @@
 GIT
   remote: git@github.com:farkasmate/rubygem-kubectl_eyaml
-  revision: 5221fda48671b198188dd4d34f314ac3e168f2cc
+  revision: c0a7c8d8bbb77282a5f0a1de7970aefe61132136
   ref: master
   specs:
-    kubectl_eyaml (1.0.0)
+    kubectl_eyaml (1.0.1)
       hiera-eyaml (~> 3.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    hiera-eyaml (3.1.1)
+    hiera-eyaml (3.2.0)
       highline (~> 1.6.19)
       optimist
     highline (1.6.21)
