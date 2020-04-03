@@ -1,10 +1,9 @@
 GIT
   remote: git@github.com:farkasmate/rubygem-kubectl_eyaml
-  revision: c0a7c8d8bbb77282a5f0a1de7970aefe61132136
+  revision: b3449f4d8964487c6e19fdf8e4ff2b935d2d113b
   ref: master
   specs:
-    kubectl_eyaml (1.0.1)
-      hiera-eyaml (~> 3.1)
+    kubectl_eyaml (2.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -20,6 +19,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  hiera-eyaml (~> 3.2)
   kubectl_eyaml!
   rake (~> 13.0)
 
