@@ -7,11 +7,13 @@ kind: HelmChart
 metadata:
   name: jenkins
 spec:
-  chart: https://%{KUBERNETES_API}%/static/charts/jenkins-1.3.6.tgz
+  chart: stable/jenkins
+  version: 1.27.0
   valuesContent: |
     master:
       image: matefarkas/jenkins
-      imageTag: 2.182-slim-arm
+      tag: 2.222.4-slim-arm
+      imagePullPolicy: "Always"
       jenkinsUriPrefix: ''
       serviceType: ClusterIP
       ingress:
@@ -21,9 +23,19 @@ spec:
           - secretName: csikoste-wildcard-tls
         annotations:
           traefik.ingress.kubernetes.io/redirect-entry-point: https
+      installPlugins:
+        - kubernetes:1.26.0
+        - workflow-job:2.39
+        - workflow-aggregator:2.6
+        - credentials-binding:1.23
+        - git:4.2.2
+        - configuration-as-code:1.41
+      sidecars:
+        configAutoReload:
+          enabled: false
     agent:
       image: matefarkas/jenkins-jnlp-agent
-      imageTag: 3.29-slim-arm
+      tag: 3.29-slim-arm
       podName: jenkins-agent
     persistence:
       enabled: false
