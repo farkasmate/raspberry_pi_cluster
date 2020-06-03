@@ -12,16 +12,15 @@ spec:
     master:
       image: matefarkas/jenkins
       imageTag: 2.182-slim-arm
-      jenkinsUriPrefix: /jenkins
+      jenkinsUriPrefix: ''
       serviceType: ClusterIP
       ingress:
         enabled: true
-        hostName: red
+        hostName: jenkins.csikoste.com
         tls:
-          - secretName: red-tls
+          - secretName: csikoste-wildcard-tls
         annotations:
           traefik.ingress.kubernetes.io/redirect-entry-point: https
-          path: /jenkins
     agent:
       image: matefarkas/jenkins-jnlp-agent
       imageTag: 3.29-slim-arm
