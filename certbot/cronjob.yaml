@@ -1,0 +1,70 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: renew-csikoste-wildcard-tls
+spec:
+  schedule: '0 0 1 * *' # @monthly
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          serviceAccountName: kubectl
+          restartPolicy: Never
+          initContainers:
+            - name: certbot
+              image: certbot/dns-cloudflare:arm32v6-v1.8.0
+              args:
+                - certonly
+                - --non-interactive
+                - --dns-cloudflare
+                - --dns-cloudflare-credentials
+                - /cloudflare/credentials.ini
+                - --post-hook
+                - /hooks/post-hook.sh
+                - --domain
+                - '*.csikoste.com'
+              volumeMounts:
+                - name: cloudflare
+                  mountPath: /cloudflare/
+                  readOnly: true
+                - name: hook
+                  mountPath: /hooks/
+                  readOnly: true
+                - name: letsencrypt-account
+                  mountPath: /etc/letsencrypt/accounts/acme-v02.api.letsencrypt.org/directory/csikoste.com/
+                  readOnly: true
+                - name: letsencrypt-temp
+                  mountPath: /etc/letsencrypt/
+                  readOnly: false
+          containers:
+            - name: kubectl
+              image: rancher/kubectl:v1.18.6-arm
+              args: ['apply', '-k', '/kustomization/']
+              volumeMounts:
+                - name: kustomization
+                  mountPath: /kustomization/
+                  readOnly: true
+                - name: letsencrypt-temp
+                  mountPath: /kustomization/letsencrypt/
+                  readOnly: true
+          volumes:
+            - name: cloudflare
+              secret:
+                secretName: cloudflare
+                defaultMode: 0600
+            - name: hook
+              configMap:
+                name: hook
+                defaultMode: 0700
+            - name: kustomization
+              configMap:
+                name: kustomization
+            - name: letsencrypt-account
+              secret:
+                secretName: letsencrypt-account
+            - name: letsencrypt-temp
+              emptyDir:
+                medium: Memory

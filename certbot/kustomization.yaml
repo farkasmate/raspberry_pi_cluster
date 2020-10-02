@@ -1,0 +1,7 @@
+namePrefix: certbot-
+
+resources:
+  - configmap.yaml
+  - cronjob.yaml
+  - rbac.yaml
+  - secret.yaml
