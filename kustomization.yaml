@@ -2,4 +2,5 @@ bases:
   - certbot
   - docker-registry
   - jenkins
+  - kaniko
   - zerotier

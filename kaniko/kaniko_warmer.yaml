@@ -1,0 +1,31 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: refresh-kaniko-cache
+spec:
+  schedule: '0 0 * * 0' # @weekly
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          containers:
+            - name: kaniko-warmer
+              image: docker-registry.csikoste.com/kaniko-warmer-arm:v1.2.0-2-g656a0b5
+              args:
+                - --cache-dir=/cache/
+                - --image=alpine:3.12.0
+                - --image=golang:latest
+              volumeMounts:
+                - name: kaniko-cache
+                  mountPath: /cache/
+                  readOnly: false
+          imagePullSecrets:
+            - name: docker-registry-dockerconfigjson
+          restartPolicy: Never
+          volumes:
+            - name: kaniko-cache
+              persistentVolumeClaim:
+                claimName: kaniko-cache

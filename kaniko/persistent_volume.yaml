@@ -1,0 +1,50 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kaniko-cache-pv-secret
+type: kubernetes.io/iscsi-chap
+stringData:
+  node.session.auth.username: ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAVebigoF4UydkEkeuCYM4QNCGHz5QiAshMdJxBLg/fhDQ60XKB/4GndRZk5q/b9LTJxrMIjVR/nDqIMdt5f6tvfXCVFQl9FSv7kPzSLFhmgmA+v/eCM0QVpccPUZcig8FVZFE/MdAYxmn2yHOHXaJ/rfNWpu7tHlKaUtgigJdZB6J9fhzqyEP6yzsaVt6zGIQ3/BX5QNUlvPHrnxYzU9IKjjLskbNSy2WuU+9xrWc8v7oIqjQjk0qxnluFbNs/F9VaxfnHR80nV53Umeu98hRgp2pTJ4hSe3uKN/lYT10U7Gon+o8kR1MC/pAW5FRqYvvPE+BPFy71wXBilyclSXU8TA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBC8ZJ1t+DD6/RCO9wMlZ0qXgBDOUSlHP5QWbmJYOSoil4B3]
+  node.session.auth.password: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAZdtG7BNcYNCRdNR1ELnD9IuamNrDb5ljiE+koAPmbYInG62MfDcmKV714bDLyApSVA8FDine4AiZsHNeboiMRDbtmnIND9YVd/2iZCTaVKab3GFqOv9UGVYmphJQcXNkIc0OSaOBlpQHXTip+KosN1m/t1mzm8XrQHOsSlKMmS0Uz4V5kaCWtgAHs9u3Y+MY+6YTRzaQm6anwk37R8Yd+HvevZS/N3ZmtivBuLSLOMJIHZ/7G6OnEf0R93b1x1QE2UHjX01OIfkEvdjXijUgWHvZ3FjTyciub5ZlV1h62bg2dNUnoEjU3lF+NlCwZhlcGNTazeuvsuDsujJw4Zt/fDBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBCa4//tyYvARDxzZdlYYHQngCDc0277f3flRoMaWgXHKzztgCRpFq68QRPiNcM5hNlEsQ==]
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kaniko-cache
+spec:
+  accessModes:
+    - ReadOnlyMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: manual
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: default-kaniko-cache-pv
+  annotations:
+    pv.kubernetes.io/provisioned-by: manually
+spec:
+  storageClassName: manual
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: kaniko-cache
+    namespace: default
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadOnlyMany
+  iscsi:
+    targetPortal: 10.100.0.101 # nas.csikoste.com
+    iqn: iqn.2013-03.com.wdc:mycloudex2ultra:default-kaniko-cache
+    lun: 0
+    fsType: ext4
+    chapAuthSession: true
+    secretRef:
+       name: kaniko-cache-pv-secret
