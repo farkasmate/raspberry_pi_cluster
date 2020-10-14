@@ -1,0 +1,20 @@
+apiVersion: skaffold/v3
+kind: Config
+metadata:
+  name: pi-k3s
+build:
+  artifacts:
+  - image: docker-registry.csikoste.com/pi-k3s-deploy-amd64
+    platforms:
+    - linux/amd64
+    docker:
+      buildArgs:
+        ALPINE_VERSION: "3.16"
+        EXTRA_MODULES: e1000
+  - image: docker-registry.csikoste.com/pi-k3s-deploy-pi64
+    platforms:
+    - linux/arm64
+    docker:
+      buildArgs:
+        ALPINE_VERSION: "3.16"
+        KERNEL_PKG: linux-rpi

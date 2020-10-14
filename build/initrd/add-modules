@@ -1,0 +1,20 @@
+#!/bin/sh
+
+modules_dir='./lib/modules'
+modules_script='./bin/load-modules'
+
+echo '#!/bin/sh' > ${modules_script}
+chmod a+x ${modules_script}
+
+for module in ${@}
+do
+  module_with_dependencies=$(modprobe --show-depends ${module} | sed 's/^insmod //')
+  for ko in ${module_with_dependencies}
+  do
+    ko_basename=$(basename ${ko})
+    if [ -f ${modules_dir}/${ko_basename} ]; then continue; fi
+
+    cp --dereference ${ko} ${modules_dir}/
+    echo "insmod /lib/modules/${ko_basename}" >> ${modules_script}
+  done
+done
