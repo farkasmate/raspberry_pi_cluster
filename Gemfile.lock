@@ -8,15 +8,15 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    hiera-eyaml (3.2.0)
-      highline (~> 1.6.19)
+    hiera-eyaml (3.3.0)
+      highline
       optimist
-    highline (1.6.21)
-    optimist (3.0.0)
-    rake (13.0.1)
+    highline (2.0.3)
+    optimist (3.0.1)
+    rake (13.0.6)
 
 PLATFORMS
-  ruby
+  x86_64-linux
 
 DEPENDENCIES
   hiera-eyaml (~> 3.2)
@@ -24,4 +24,4 @@ DEPENDENCIES
   rake (~> 13.0)
 
 BUNDLED WITH
-   2.0.1
+   2.3.7

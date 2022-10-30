@@ -6,6 +6,14 @@ For details go to: https://farkasmate.github.io/raspberry_pi_cluster/
 
 ### Apply config
 
+TODO: Migrate to sealed secrets
+
 ```
-kubectl eyaml apply -k .
+bundle exec kubectl eyaml apply -k .
+```
+
+## Schedule certificate renewal immediately
+
+```
+kubectl exec-cronjob certbot-renew-csikoste-wildcard-tls
 ```
