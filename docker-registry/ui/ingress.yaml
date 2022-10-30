@@ -1,11 +1,10 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: regui
   annotations:
-    kubernetes.io/ingress.class: traefik
-    traefik.frontend.rule.type: PathPrefixStrip
-    traefik.ingress.kubernetes.io/redirect-entry-point: https
+    # NOTE: default- prefix is the middleware's namespace
+    traefik.ingress.kubernetes.io/router.middlewares: default-https-redirect@kubernetescrd
 
 spec:
   rules:
@@ -13,6 +12,9 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: regui
-          servicePort: http
+          service:
+            name: regui
+            port:
+              name: http

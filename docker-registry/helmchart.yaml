@@ -3,16 +3,17 @@ kind: HelmChart
 metadata:
   name: docker-registry
 spec:
-  chart: stable/docker-registry
+  chart: https://helm.twun.io/docker-registry-2.2.2.tgz
   valuesContent: |
     ingress:
       enabled: true
+      className: ''
       hosts:
         - docker-registry.csikoste.com
       tls:
         - secretName: csikoste-wildcard-tls
       annotations:
-        traefik.ingress.kubernetes.io/redirect-entry-point: https
+        traefik.ingress.kubernetes.io/router.middlewares: default-https-redirect@kubernetescrd
     persistence:
       enabled: true
       size: 10Gi

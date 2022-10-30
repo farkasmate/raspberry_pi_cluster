@@ -1,4 +1,5 @@
 resources:
   - deployment.yaml
   - ingress.yaml
+  - middleware.yaml # FIXME
   - service.yaml

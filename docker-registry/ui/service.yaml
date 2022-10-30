@@ -7,5 +7,5 @@ spec:
     apps: regui
   ports:
   - name: http
-    port: 80
+    port: 8080
     targetPort: 8080
