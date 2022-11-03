@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: regui
   labels:
-    apps: regui
+    app: regui
 spec:
   replicas: 2
   selector:
     matchLabels:
-      apps: regui
+      app: regui
   template:
     metadata:
       labels:
-        apps: regui
+        app: regui
     spec:
       containers:
       - name: regui

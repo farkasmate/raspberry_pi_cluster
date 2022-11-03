@@ -4,7 +4,7 @@ metadata:
   name: regui
 spec:
   selector:
-    apps: regui
+    app: regui
   ports:
   - name: http
     port: 8080
