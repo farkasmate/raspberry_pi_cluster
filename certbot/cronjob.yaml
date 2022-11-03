@@ -9,6 +9,7 @@ spec:
   jobTemplate:
     spec:
       backoffLimit: 0
+      ttlSecondsAfterFinished: 60
       template:
         spec:
           serviceAccountName: kubectl
