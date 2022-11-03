@@ -1,5 +1,5 @@
 bases:
   - certbot
   - docker-registry
-  - kaniko
+#  - kaniko
   - zerotier
