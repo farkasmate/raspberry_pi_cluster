@@ -14,6 +14,22 @@ spec:
       labels:
         app: regui
     spec:
+      initContainers:
+      - name: wait-for-docker-registry
+        image: busybox:1.34
+        command:
+        - sh
+        - -c
+        - |
+          while true
+          do
+            wget --no-check-certificate --timeout 5 -O - https://docker-registry.csikoste.com/
+            if [ "${?}" == "0" ]
+            then
+              break
+            fi
+            sleep 1
+          done
       containers:
       - name: regui
         image: bessenyeicsilla/genuinetools_reg:latest
@@ -28,6 +44,9 @@ spec:
             secretKeyRef:
               name: docker-push-secret
               key: password
-        command: ["sh", "-c", "reg server --interval 1m -r https://docker-registry.csikoste.com -u $(REGISTRY_USERNAME) -p $(REGISTRY_PASSWORD)"]
+        command:
+        - sh
+        - -c
+        - reg server --interval 1m -r https://docker-registry.csikoste.com -u $(REGISTRY_USERNAME) -p $(REGISTRY_PASSWORD)
         ports:
         - containerPort: 8080
