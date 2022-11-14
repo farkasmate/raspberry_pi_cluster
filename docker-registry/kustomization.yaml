@@ -1,7 +1,7 @@
-bases:
-  - ui
-
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 resources:
-  - helmchart.yaml
   - persistent_volume.yaml
-  - secret.yaml
+  - sealed_secret.yaml
+  - helmchart.yaml
+  - ui/

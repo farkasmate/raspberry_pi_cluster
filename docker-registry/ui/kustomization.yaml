@@ -1,5 +1,5 @@
 resources:
   - deployment.yaml
   - ingress.yaml
-  - middleware.yaml # FIXME
+  - middleware.yaml # FIXME: Move out of docker-registry
   - service.yaml

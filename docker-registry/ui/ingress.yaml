@@ -4,17 +4,16 @@ metadata:
   name: regui
   annotations:
     # NOTE: default- prefix is the middleware's namespace
-    traefik.ingress.kubernetes.io/router.middlewares: default-https-redirect@kubernetescrd
-
+    traefik.ingress.kubernetes.io/router.middlewares: default-https-redirect@kubernetescrd # FIXME
 spec:
   rules:
-  - host: reg.csikoste.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: regui
-            port:
-              name: http
+    - host: reg.csikoste.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: regui
+                port:
+                  name: http

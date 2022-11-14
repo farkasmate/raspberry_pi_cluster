@@ -1,22 +1,54 @@
-apiVersion: helm.cattle.io/v1
-kind: HelmChart
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: twuni
+spec:
+  interval: 1h0m0s
+  url: https://helm.twun.io
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
 metadata:
   name: docker-registry
 spec:
-  chart: https://helm.twun.io/docker-registry-2.2.2.tgz
-  valuesContent: |
+  chart:
+    spec:
+      chart: docker-registry
+      sourceRef:
+        kind: HelmRepository
+        name: twuni
+      version: 2.2.2
+  interval: 1h0m0s
+  values:
+    # NOTE: `extraEnvVars`, `extraVolumeMounts`, `extraVolumes` are supporting `.Values.secrets.htpasswd`-management from a SealedSecret
+    extraEnvVars:
+      - name: REGISTRY_AUTH
+        value: htpasswd
+      - name: REGISTRY_AUTH_HTPASSWD_REALM
+        value: Registry Realm
+      - name: REGISTRY_AUTH_HTPASSWD_PATH
+        value: /auth/htpasswd
+    extraVolumeMounts:
+      - name: auth
+        mountPath: /auth
+        readOnly: true
+    extraVolumes:
+      - name: auth
+        secret:
+          secretName: docker-push-secret
+          items:
+            - key: htpasswd
+              path: htpasswd
     ingress:
       enabled: true
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: default-https-redirect@kubernetescrd # FIXME
       className: ''
       hosts:
         - docker-registry.csikoste.com
       tls:
         - secretName: csikoste-wildcard-tls
-      annotations:
-        traefik.ingress.kubernetes.io/router.middlewares: default-https-redirect@kubernetescrd
     persistence:
       enabled: true
       size: 10Gi
       storageClass: manual
-    secrets:
-      htpasswd: ENC[PKCS7,MIIBuQYJKoZIhvcNAQcDoIIBqjCCAaYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAtKlaZceskGKwQRz0ennuMnpUmj2bnZS+Ndgaud2hJONy8TBEtsC0lj3rsfvX7kr+Jb/mkXKaF/B20252PjjhSFwKGpFmR5jidIqY4sART+GdQGKyTC/V0jctzDUOZYVg0443fo6amnSmXwjbkxA1HGRdQ0g6I4Qr0bBKa/Xj2cJhLf1pClN8VEwNvmmEo4NKVu9ykpDzlP6Tqw/BrbY+s8Eb/tFSXIRknIM/o4WzlwTnmGx8U05m1WAo7Wy3rbaDGlQLNdvvVC8tIpYWBI8pRKzwWOcMq3lsO1Lb72zgzIJ1ifKl6R3ke4cZF8LZF2B7euNDk+iQVXYucEjDCNqEJjB8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBDYy4hjvqCjAscZ45GreY9XgFDE4y1C3wNsGV+9VPWyO8FRLCtiBhu51nWJjZMd5K30L7aQOGkPy5jHF6DjkA3fGDLKI0xLy+Yu89HQtqLajKEk/PIuxIPKMd+OgyxB/B200w==]
