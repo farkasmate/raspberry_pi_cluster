@@ -1,0 +1,8 @@
+FROM alpine:latest
+
+RUN apk add --no-cache \
+    tinyproxy
+
+WORKDIR /build/
+
+ENTRYPOINT ["/usr/bin/tinyproxy"]
