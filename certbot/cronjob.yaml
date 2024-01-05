@@ -1,8 +1,9 @@
----
 apiVersion: batch/v1
 kind: CronJob
+
 metadata:
   name: renew-csikoste-wildcard-tls
+
 spec:
   schedule: '0 0 1 * *' # @monthly
   concurrencyPolicy: Replace

@@ -1,8 +1,9 @@
----
 apiVersion: batch/v1beta1
 kind: CronJob
+
 metadata:
   name: refresh-kaniko-cache
+
 spec:
   schedule: '0 0 * * 0' # @weekly
   concurrencyPolicy: Replace

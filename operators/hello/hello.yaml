@@ -1,23 +1,28 @@
----
 apiVersion: crd.y2k/v1
 kind: Hello
+
 metadata:
   name: world
+
 spec:
   name: world
 
 ---
 apiVersion: crd.y2k/v1
 kind: Hello
+
 metadata:
   name: test
+
 spec:
   name: test
 
 ---
 apiVersion: crd.y2k/v1
 kind: Hello
+
 metadata:
   name: lorem
+
 spec:
   name: 'Lorem ipsum dolor sit amet'

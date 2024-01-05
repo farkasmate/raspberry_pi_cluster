@@ -4,7 +4,8 @@ services:
   zerotier:
     image: zerotier/zerotier:latest
     entrypoint: /bin/bash
-    command: -c "ip route add 10.0.2.0/24 via $(ip route show default | cut -d' ' -f3) dev eth0; /entrypoint.sh ${NETWORK_ID}"
+    command: |
+      -c "ip route add 10.0.2.0/24 via $(ip route show default | cut -d' ' -f3) dev eth0; /entrypoint.sh ${NETWORK_ID}"
     cap_add:
       - NET_ADMIN
     environment:

@@ -1,15 +1,16 @@
 # I'm building a Raspberry Pi cluster
 
-For details go to: https://farkasmate.github.io/raspberry_pi_cluster/
+For details go to: <https://farkasmate.github.io/raspberry_pi_cluster/>
 
 ## Kustomize config for Raspberry Pi cluster
 
 ### Apply config
 
-TODO: Migrate to sealed secrets
+TODO: Migrate to sealed secrets (or pass)
 
 ```
-bundle exec kubectl eyaml apply -k .
+kustomize build | bundle exec kubectl eyaml diff -f -
+kustomize build | bundle exec kubectl eyaml apply -f -
 ```
 
 ## Schedule certificate renewal immediately

@@ -16,6 +16,7 @@ GEM
     rake (13.0.6)
 
 PLATFORMS
+  aarch64-linux
   x86_64-linux
 
 DEPENDENCIES

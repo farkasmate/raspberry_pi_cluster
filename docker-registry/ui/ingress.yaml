@@ -1,10 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
+
 metadata:
   name: regui
   annotations:
     # NOTE: default- prefix is the middleware's namespace
     traefik.ingress.kubernetes.io/router.middlewares: default-https-redirect@kubernetescrd # FIXME
+
 spec:
   rules:
     - host: reg.csikoste.com

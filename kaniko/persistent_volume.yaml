@@ -1,8 +1,9 @@
----
 apiVersion: v1
 kind: Secret
+
 metadata:
   name: kaniko-cache-pv-secret
+
 type: kubernetes.io/iscsi-chap
 stringData:
   node.session.auth.username: ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAVebigoF4UydkEkeuCYM4QNCGHz5QiAshMdJxBLg/fhDQ60XKB/4GndRZk5q/b9LTJxrMIjVR/nDqIMdt5f6tvfXCVFQl9FSv7kPzSLFhmgmA+v/eCM0QVpccPUZcig8FVZFE/MdAYxmn2yHOHXaJ/rfNWpu7tHlKaUtgigJdZB6J9fhzqyEP6yzsaVt6zGIQ3/BX5QNUlvPHrnxYzU9IKjjLskbNSy2WuU+9xrWc8v7oIqjQjk0qxnluFbNs/F9VaxfnHR80nV53Umeu98hRgp2pTJ4hSe3uKN/lYT10U7Gon+o8kR1MC/pAW5FRqYvvPE+BPFy71wXBilyclSXU8TA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBC8ZJ1t+DD6/RCO9wMlZ0qXgBDOUSlHP5QWbmJYOSoil4B3]
@@ -11,8 +12,10 @@ stringData:
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
+
 metadata:
   name: kaniko-cache
+
 spec:
   accessModes:
     - ReadOnlyMany
@@ -25,10 +28,12 @@ spec:
 ---
 apiVersion: v1
 kind: PersistentVolume
+
 metadata:
   name: default-kaniko-cache-pv
   annotations:
     pv.kubernetes.io/provisioned-by: manually
+
 spec:
   storageClassName: manual
   claimRef:
@@ -47,4 +52,4 @@ spec:
     fsType: ext4
     chapAuthSession: true
     secretRef:
-       name: kaniko-cache-pv-secret
+      name: kaniko-cache-pv-secret
