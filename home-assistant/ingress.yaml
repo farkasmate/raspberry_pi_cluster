@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: home-assistant
+  annotations:
+    # NOTE: default- prefix is the middleware's namespace
+    traefik.ingress.kubernetes.io/router.middlewares: default-https-redirect@kubernetescrd # FIXME
+
+spec:
+  rules:
+    - host: home.csikoste.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: home-assistant
+                port:
+                  name: web
