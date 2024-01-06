@@ -1,0 +1,9 @@
+topic deny #
+
+topic read homeassistant/status
+# Only allow switches for now
+pattern readwrite homeassistant/switch/%u/#
+
+user home-assistant
+topic read #
+topic readwrite homeassistant/#

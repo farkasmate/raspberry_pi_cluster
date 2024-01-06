@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: mqtt
+
+spec:
+  strategy:
+    type: Recreate
+  template:
+    spec:
+      containers:
+        - name: mqtt
+          image: eclipse-mosquitto:2.0.18
+          args:
+            - mosquitto
+            - -c
+            - /etc/mosquitto/mosquitto.conf
+          ports:
+            - name: mqtt
+              containerPort: 1883
+          volumeMounts:
+            - name: config
+              mountPath: /etc/mosquitto/acl_file
+              subPath: acl_file
+            - name: config
+              mountPath: /etc/mosquitto/mosquitto.conf
+              subPath: mosquitto.conf
+            - name: password-file
+              mountPath: /etc/mosquitto/password_file
+              subPath: password_file
+      volumes:
+        - name: config
+          configMap:
+            name: mqtt
+        - name: password-file # FIXME: Permissions
+          secret:
+            secretName: mqtt
