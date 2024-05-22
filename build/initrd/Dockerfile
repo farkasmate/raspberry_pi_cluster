@@ -16,7 +16,7 @@ RUN mkdir -p ./bin/ ./lib/modules/ /lib/modules/ /out/ \
       ${KERNEL_PKG} \
       busybox \
       kmod-libs \
-      libcrypto1.1 \
+      libcrypto3 \
       musl \
       open-iscsi \
       open-iscsi-libs \
@@ -26,7 +26,7 @@ RUN mkdir -p ./bin/ ./lib/modules/ /lib/modules/ /out/ \
     && tar xf /tmp/${KERNEL_PKG}-*.apk -C /tmp/ boot/ lib/modules/ \
     && tar xf /tmp/busybox-[[:digit:]]*.apk bin/ \
     && tar xf /tmp/kmod-libs-*.apk lib/ \
-    && tar xf /tmp/libcrypto1.1-*.apk lib/ \
+    && tar xf /tmp/libcrypto3-*.apk lib/ \
     && tar xf /tmp/musl-*.apk lib/ \
     && tar xf /tmp/open-iscsi-[[:digit:]]*.apk -C ./bin/ --strip-components 2 usr/sbin/iscsistart \
     && tar xf /tmp/open-iscsi-libs-*.apk --strip-components 1 usr/lib/ \
@@ -54,7 +54,7 @@ RUN mkdir -p /out/ \
     && apk add --root ./ --keys-dir /etc/apk/keys/ --repositories-file /etc/apk/repositories --initdb \
       alpine-baselayout \
       blkid \
-      busybox-initscripts \
+      busybox-openrc \
       ca-certificates-bundle \
       dropbear \
       dropbear-openrc \
@@ -63,8 +63,6 @@ RUN mkdir -p /out/ \
       k3s-openrc \
       open-iscsi \
     && rm -rf ./etc/apk/ ./lib/apk/ ./var/cache/apk/ \
-    # NOTE: Not needed in 'edge' cni-plugin-flannel package
-    && ln -s $(find ./usr/libexec/cni/ -name 'flannel-*' -exec basename {} \;) ./usr/libexec/cni/flannel \
     && chmod -R go-rwx ./root/ \
     && find . -print0 | cpio --create --format newc --null --owner 0:0 --quiet | gzip > /out/rootfs.cpio.gz
 

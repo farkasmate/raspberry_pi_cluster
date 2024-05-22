@@ -11,12 +11,12 @@ build:
         - linux/amd64
       docker:
         buildArgs:
-          ALPINE_VERSION: "3.16"
+          ALPINE_VERSION: "3.20"
           EXTRA_MODULES: e1000
     - image: docker-registry.csikoste.com/pi-k3s-deploy-pi64
       platforms:
         - linux/arm64
       docker:
         buildArgs:
-          ALPINE_VERSION: "3.16"
+          ALPINE_VERSION: "3.20"
           KERNEL_PKG: linux-rpi
