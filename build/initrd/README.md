@@ -1,16 +1,11 @@
 ## Get initrd and kernel
 
 ```
-docker run --rm -it --name temp docker-registry.csikoste.com/initrd-deploy:e08ebd1-dirty
-```
-
-```
-docker cp temp:/out/initrd.cpio.gz .
-docker cp temp:/out/vmlinuz-lts kernel8.img
+docker run --rm -v ${PWD}/target/:/target/:rw docker-registry.csikoste.com/pi-k3s-deploy-pi64:tag
 ```
 
 ## Extract initrd
 
 ```
-zcat initrd.cpio.gz | cpio -idv --no-absolute-filenames
+zcat target/initrd.cpio.gz | cpio -idv --no-absolute-filenames --directory extract
 ```
