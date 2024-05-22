@@ -1,0 +1,11 @@
+services:
+  mqtt:
+    image: eclipse-mosquitto:2.0.18
+    command: mosquitto -c /etc/mosquitto/mosquitto.conf -v
+    ports:
+      - 1883:1883
+      - 9001:9001 # websockets
+    volumes:
+      - ./acl_file:/etc/mosquitto/acl_file:ro
+      - ./mosquitto.conf:/etc/mosquitto/mosquitto.conf:ro
+      - ./password_file:/etc/mosquitto/password_file:ro

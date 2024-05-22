@@ -1,0 +1,14 @@
+# test
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: mqtt-test
+
+spec:
+  type: NodePort
+  ports:
+    - name: mqtt
+      port: 1883
+  selector:
+    app: mqtt
