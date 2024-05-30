@@ -1,0 +1,20 @@
+name: client
+version: 0.1.0
+
+authors:
+  - your-name-here <your-email-here>
+
+dependencies:
+  mqtt:
+    github: spider-gazelle/crystal-mqtt
+  mqtt_crystal:
+    github: liu-chong/mqtt_crystal
+    branch: master
+
+targets:
+  toggle:
+    main: src/toggle.cr
+
+crystal: 1.8.2
+
+license: MIT
