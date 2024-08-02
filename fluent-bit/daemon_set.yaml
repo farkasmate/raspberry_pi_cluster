@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluent-bit
+spec:
+  selector:
+    matchLabels:
+      name: fluent-bit
+  template:
+    metadata:
+      labels:
+        name: fluent-bit
+    spec:
+      serviceAccountName: fluent-bit
+      containers:
+        - name: fluent-bit
+          image: fluent/fluent-bit:1.9.9
+          env:
+            - name: AXIOM_DATASET_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: fluent-bit-secret
+                  key: AXIOM_DATASET_NAME
+            - name: AXIOM_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: fluent-bit-secret
+                  key: AXIOM_API_TOKEN
+          volumeMounts:
+            - name: config
+              mountPath: /fluent-bit/etc/fluent-bit.conf
+              subPath: fluent-bit.conf
+            - name: config
+              mountPath: /fluent-bit/etc/parsers.conf
+              subPath: parsers.conf
+            - name: db
+              mountPath: /db
+            - name: varlog
+              mountPath: /var/log
+      volumes:
+        - name: config
+          configMap:
+            name: fluent-bit-config
+        - name: db
+          hostPath:
+            path: /data/k8s/fluent-bit
+        - name: varlog
+          hostPath:
+            path: /data/overlay/var/log
+      terminationGracePeriodSeconds: 10
