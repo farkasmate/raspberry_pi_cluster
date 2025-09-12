@@ -28,7 +28,7 @@ spec:
     name: docker-registry
     namespace: default
   capacity:
-    storage: 10Gi
+    storage: 50Gi
   accessModes:
     - ReadWriteOnce
   iscsi:
