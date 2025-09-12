@@ -1,19 +1,22 @@
-name: zerotier_client
+#name: zerotier_client
 
 services:
   zerotier:
     image: zerotier/zerotier:latest
     entrypoint: /bin/bash
     command: |
-      -c "ip route add 10.0.2.0/24 via $(ip route show default | cut -d' ' -f3) dev eth0; /entrypoint.sh ${NETWORK_ID}"
+      -c "ip route add 10.0.2.0/24 via $$(ip route show default | cut -d' ' -f3) dev eth0; ip route add 8.8.8.8/32 via $$(ip route show default | cut -d' ' -f3) dev eth0; /entrypoint.sh ${NETWORK_ID:?}"
     cap_add:
       - NET_ADMIN
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     environment:
-      ZEROTIER_IDENTITY_SECRET: ${ZEROTIER_IDENTITY_SECRET}
+      ZEROTIER_IDENTITY_SECRET: ${ZEROTIER_IDENTITY_SECRET:?}
     ports:
-      - 8888:8888
+      - 9999:8888
     volumes:
-      - ./zerotier_network.conf:/var/lib/zerotier-one/networks.d/${NETWORK_ID}.local.conf:ro
+      - ./zerotier_network.conf:/var/lib/zerotier-one/networks.d/${NETWORK_ID:?}.local.conf:ro
       - /dev/net/tun:/dev/net/tun:ro
 
   tinyproxy:
@@ -23,6 +26,6 @@ services:
       - zerotier
     image: matefarkas/tinyproxy:latest
     command: -d -c /etc/tinyproxy/tinyproxy.conf
-    network_mode: container:zerotier_client-zerotier-1
+    network_mode: container:client-zerotier-1
     volumes:
       - ./tinyproxy.conf:/etc/tinyproxy/tinyproxy.conf:ro

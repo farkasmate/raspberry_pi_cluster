@@ -3,8 +3,8 @@
 ## Connect
 
 ```shell
-pass exec zerotier/raspberry_pi_cluster -- docker compose up -d
-export https_proxy=localhost:8888
+pass dotenv -- docker compose up -d
+export https_proxy=localhost:9999
 ```
 
 ## Test connection
