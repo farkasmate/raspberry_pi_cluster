@@ -21,9 +21,17 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config/
+            - name: dbus
+              mountPath: /run/dbus/
+              readOnly: true
       imagePullSecrets:
         - name: docker-registry-dockerconfigjson
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: home-assistant
+        - name: dbus
+          hostPath:
+            path: /tmp/dbus/ # FIXME
+            type: Directory
+      nodeName: orange # FIXME

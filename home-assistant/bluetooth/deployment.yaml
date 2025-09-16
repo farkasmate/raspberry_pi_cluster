@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: bluetooth
+
+spec:
+  strategy:
+    type: Recreate
+  template:
+    spec:
+      containers:
+        - name: dbus
+          image: alpine:latest
+          command:
+            - /entrypoint.sh
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: bluetooth
+              mountPath: /dev/ttyAMA0
+              readOnly: true
+            - name: dbus
+              mountPath: /run/dbus/
+              readOnly: false
+            - name: entrypoint
+              mountPath: /entrypoint.sh
+              subPath: entrypoint.sh
+              readOnly: true
+      volumes:
+        - name: bluetooth
+          hostPath:
+            path: /dev/ttyAMA1
+        - name: dbus
+          hostPath:
+            path: /tmp/dbus/ # FIXME
+            type: Directory
+        - name: entrypoint
+          configMap:
+            name: home-assistant-bluetooth-entrypoint
+            defaultMode: 0755
+      hostNetwork: true
+      nodeName: orange # FIXME

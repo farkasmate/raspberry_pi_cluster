@@ -16,5 +16,5 @@ labels:
 
 images:
   - name: ghcr.io/home-assistant/home-assistant
-    newName: docker-registry.csikoste.com/home-assistant/home-assistant
-    newTag: 2024.1.1
+    #newName: docker-registry.csikoste.com/home-assistant/home-assistant # FIXME
+    newTag: 2025.9.1
